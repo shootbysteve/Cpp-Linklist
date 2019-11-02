@@ -1,7 +1,6 @@
 ﻿// Link
 
-
-#include "pch.h"
+#include"pch.h"
 #include <iostream>
 #define say(x) std::cout<<x<<std::endl;
 #define debugprint(x) std::cout<<"[DEBUG] "<<x<<" [DEBUG]"<<std::endl;
@@ -25,71 +24,71 @@ class List {
 private:
 
 	int m_Length;
-	Node* Head;
-	Node* Tail;
+	Node* m_Head;
+	Node* m_Tail;
 public:
 	List()
-		:Head(nullptr),Tail(nullptr),m_Length(0)
+		:m_Head(nullptr),m_Tail(nullptr),m_Length(0)
 	{
 	}
 
 	~List() {
-	Node* CurrNode = Head;
+	Node* currNode = m_Head;
 		for (int i = 1; i < m_Length + 1; i++) {
-			if (i == m_Length) delete CurrNode;  break;
-			Node * temp = CurrNode;
-			Head = temp->next;
+			if (currNode == m_Tail) delete currNode;  break;
+			Node* temp = currNode;
+			currNode = currNode->next;
 			delete temp;
 		}
 	}
 
 
-	void CreateNode(int& value) {
+	void createNode(int& value) {
 		Node* temp = new Node;
 		temp->data = value;
 		temp->next = NULL;
 		m_Length++;
-		if (Head == NULL) {
-			Head = temp;
-			Tail = temp;
+		if (m_Head == NULL) {
+			m_Head = temp;
+			m_Tail = temp;
 		}
 		else {
-			Tail->next = temp;
-			Tail = temp;
+			m_Tail->next = temp;
+			m_Tail = temp;
 		}
 
 	}
 	
 
-	void DisplayList() {
-		Node* CurrNode;
-		CurrNode = Head;
+	void displayList() {
+		Node* currNode;
+		currNode = m_Head;
 		std::cout << "Displaying List at Memory " << this << " |List Size" << m_Length << "\n||||||||||||||||" << std::endl;
 		
 		for (int i = 1; i < m_Length + 1; i++) {
 			say("DATA")
-				say(CurrNode->data)
+				say(currNode->data)
 				say("MEMORY")
-				say(CurrNode)
+				say(currNode)
 				say("POINTS TO")
-				say(CurrNode->next)
+				say(currNode->next)
 				say("-----------------")
-				CurrNode = CurrNode->next;
+				currNode = currNode->next;
 		}
 	}
 
 
-	Node* FindByValue(int value) {
-		Node* CurrNode = Head;
+	Node* findByValue(int value) {
+		Node* currNode = m_Head;
 
 		for (int i = 1; i < m_Length + 1;i++) {
 
-			if (CurrNode->data == value) {
-				return CurrNode; break;
+			if (currNode->data == value) {
+				return currNode; break;
 			}
 
 			else {
-				CurrNode = CurrNode->next;
+				currNode = currNode->next;
 			}
 
 		}
@@ -105,85 +104,86 @@ public:
 		return m_Length;
 	}
 
-	void RemoveHead() {
+	void removeHead() {
 		
-		Node *temp = Head;
-		Head = temp->next;
+		Node *temp = m_Head;
+		m_Head = temp->next;
 		delete temp;
 		m_Length--;
 	}
 
-	void RemoveTail() {
-		Node *CurrNode = Head;
-		Node *PrevNode = nullptr;
+	void removeTail() {
+		Node *currNode = m_Head;
+		Node *prevNode = nullptr;
 		
 
 		for (int i = 1; i < m_Length + 1; i++) {
-			if (CurrNode->next == nullptr) {
+			if (currNode->next == nullptr) {
 			
-				PrevNode->next = nullptr;
-				delete CurrNode;
+				prevNode->next = nullptr;
+				delete currNode;
 				m_Length--;
 				break;
 			}
 
-			PrevNode = CurrNode;
-			CurrNode = CurrNode->next;
+			prevNode = currNode;
+			currNode = currNode->next;
 		}
 
 	}
 
-	void RemoveByPtr(Node* DelNode) {
-		Node* CurrNode = Head;
-		Node* PrevNode = nullptr;
+	void removeByPtr(Node* DelNode) {
+		Node* currNode = m_Head;
+		Node* prevNode = nullptr;
 
 		for (int i = 1; i < m_Length + 1; i++) {
 			
-			if (CurrNode == DelNode) {
-				PrevNode->next = DelNode->next;
+			if (currNode == DelNode) {
+				prevNode->next = DelNode->next;
 				delete DelNode;
 				m_Length--;
 				break;
 			}
 
-			PrevNode = CurrNode;
-			CurrNode = CurrNode->next;
+			prevNode = currNode;
+			currNode = currNode->next;
 		}
 
 	}
 
-	void AddByPtr(Node* AddNode,const int& value) {
-		Node *CurrNode = Head;
-		Node *PrevNode = nullptr;
+	void addByPtr(Node* AddNode,const int& value) {
+		Node *currNode = m_Head;
+		Node *prevNode = nullptr;
 		Node* temp = new Node;
 		temp->data = value;
 		for (int i = 1; i < m_Length + 1; i++) {
 			
-			if (CurrNode == AddNode) {
+			if (currNode == AddNode) {
 			   
-				temp->next = CurrNode->next;
-				CurrNode->next = temp;
+				temp->next = currNode->next;
+				currNode->next = temp;
 				m_Length++;
 				break;
 			}
 
-			PrevNode = CurrNode;
-			CurrNode = CurrNode->next;
+			prevNode = currNode;
+			currNode = currNode->next;
 		}
 
 	}
 
-	Node* LastNode() {
-		return Tail;
+	Node* lastNode() {
+		return m_Tail;
 	}
 
-	Node* FirstNode() {
-		return Head;
+	Node* firstNode() {
+		return m_Head;
 	}
 
 
-	void Merge(List* mergelist) {
-		Tail->next = mergelist->FirstNode();
+	void merge(List* mergelist) {
+		if (mergelist == NULL) return ;
+		m_Tail->next = mergelist->firstNode();
 	}
 
 };
@@ -195,20 +195,20 @@ int main()
 {
 	List mylist;
 	for (int i = 1; i < 11; i++) {
-		mylist.CreateNode(i);
+		mylist.createNode(i);
 
 	}
 	
-	mylist.DisplayList();
+	mylist.displayList();
 
 
 
-	mylist.AddByPtr(mylist.FindByValue(2),10);
+	mylist.addByPtr(mylist.findByValue(2),10);
 	
 
-		mylist.RemoveHead();
-		mylist.RemoveTail();
-		mylist.DisplayList();
+		mylist.removeHead();
+		mylist.removeTail();
+		mylist.displayList();
 	
 
 
