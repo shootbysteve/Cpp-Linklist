@@ -26,6 +26,40 @@ private:
 	int m_Length;
 	Node* m_Head;
 	Node* m_Tail;
+
+	
+
+	void removeHead() {
+
+		Node *temp = m_Head;
+		m_Head = temp->next;
+		delete temp;
+		m_Length--;
+	}
+
+	void removeTail() {
+		Node *currNode = m_Head;
+		Node *prevNode = nullptr;
+
+
+		for (int i = 0; i < m_Length; ++i) {
+			if (currNode->next == nullptr) {
+
+				prevNode->next = nullptr;
+				delete currNode;
+				m_Length--;
+				break;
+			}
+
+			prevNode = currNode;
+			currNode = currNode->next;
+		}
+
+	}
+
+
+
+
 public:
 	List()
 		:m_Head(nullptr),m_Tail(nullptr),m_Length(0)
@@ -34,7 +68,7 @@ public:
 
 	~List() {
 	Node* currNode = m_Head;
-		for (int i = 1; i < m_Length + 1; i++) {
+		for (int i = 0; i < m_Length; ++i) {
 			if (currNode == m_Tail) delete currNode;  break;
 			Node* temp = currNode;
 			currNode = currNode->next;
@@ -43,7 +77,7 @@ public:
 	}
 
 
-	void createNode(int& value) {
+	void add(int& value) {
 		Node* temp = new Node;
 		temp->data = value;
 		temp->next = NULL;
@@ -65,7 +99,7 @@ public:
 		currNode = m_Head;
 		std::cout << "Displaying List at Memory " << this << " |List Size" << m_Length << "\n||||||||||||||||" << std::endl;
 		
-		for (int i = 1; i < m_Length + 1; i++) {
+		for (int i = 0; i < m_Length; ++i) {
 			say("DATA")
 				say(currNode->data)
 				say("MEMORY")
@@ -78,10 +112,10 @@ public:
 	}
 
 
-	Node* findByValue(int value) {
+	Node* find(int value) {
 		Node* currNode = m_Head;
 
-		for (int i = 1; i < m_Length + 1;i++) {
+		for (int i = 0; i < m_Length;++i) {
 
 			if (currNode->data == value) {
 				return currNode; break;
@@ -100,43 +134,17 @@ public:
 
 
 
-	int length() const {
+	int size() const {
 		return m_Length;
 	}
 
-	void removeHead() {
+	void remove(Node* DelNode) {
+		if (DelNode == nullptr) return;
 		
-		Node *temp = m_Head;
-		m_Head = temp->next;
-		delete temp;
-		m_Length--;
-	}
-
-	void removeTail() {
-		Node *currNode = m_Head;
-		Node *prevNode = nullptr;
-		
-
-		for (int i = 1; i < m_Length + 1; i++) {
-			if (currNode->next == nullptr) {
-			
-				prevNode->next = nullptr;
-				delete currNode;
-				m_Length--;
-				break;
-			}
-
-			prevNode = currNode;
-			currNode = currNode->next;
-		}
-
-	}
-
-	void removeByPtr(Node* DelNode) {
 		Node* currNode = m_Head;
 		Node* prevNode = nullptr;
 
-		for (int i = 1; i < m_Length + 1; i++) {
+		for (int i = 0; i < m_Length; ++i) {
 			
 			if (currNode == DelNode) {
 				prevNode->next = DelNode->next;
@@ -151,12 +159,13 @@ public:
 
 	}
 
-	void addByPtr(Node* AddNode,const int& value) {
+	void append(Node* AddNode,const int& value) {
+		if (AddNode == nullptr) return;
 		Node *currNode = m_Head;
 		Node *prevNode = nullptr;
 		Node* temp = new Node;
 		temp->data = value;
-		for (int i = 1; i < m_Length + 1; i++) {
+		for (int i = 1; i < m_Length + 1; ++i) {
 			
 			if (currNode == AddNode) {
 			   
@@ -170,6 +179,16 @@ public:
 			currNode = currNode->next;
 		}
 
+	}
+
+	void clear() {
+		Node* currNode = m_Head;
+		for (int i = 0; i < m_Length; ++i) {
+			if (currNode == m_Tail) delete currNode;  break;
+			Node* temp = currNode;
+			currNode = currNode->next;
+			delete temp;
+		}
 	}
 
 	Node* lastNode() {
@@ -188,26 +207,20 @@ public:
 
 };
 
-
+ 
 
 
 int main()
 {
 	List mylist;
-	for (int i = 1; i < 11; i++) {
-		mylist.createNode(i);
+	for (int i = 1; i < 11; ++i) {
+		mylist.add(i);
 
 	}
 	
 	mylist.displayList();
 
 
-
-	mylist.addByPtr(mylist.findByValue(2),10);
-	
-
-		mylist.removeHead();
-		mylist.removeTail();
 		mylist.displayList();
 	
 
